@@ -18,9 +18,9 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/profile/{username}", newhandlers.ProfileHandler).Methods("GET")
 	r.HandleFunc("/triggerpanic", newhandlers.TriggerPanicHandler).Methods("GET")
-
+	r.HandleFunc("/foo", newhandlers.FooHandler).Methods("GET")
 	fmt.Println(gh.LoggingHandler(os.Stdout, r))
-	http.Handle("/", middleware.PanicRecoveryHandler(gh.LoggingHandler(os.Stdout, r)))
+	http.Handle("/", middleware.ContextHandler(middleware.PanicRecoveryHandler(gh.LoggingHandler(os.Stdout, r))))
 	_ = http.ListenAndServe(WEBSERVERPORT, nil)
 
 }

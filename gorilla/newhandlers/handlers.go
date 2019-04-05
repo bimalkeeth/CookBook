@@ -25,3 +25,10 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 func TriggerPanicHandler(w http.ResponseWriter, r *http.Request) {
 	panic("triggering panic")
 }
+func FooHandler(w http.ResponseWriter, r *http.Request) {
+	fooId := r.Context().Value("FoodId").(string)
+	_, err := w.Write([]byte(fooId))
+	if err != nil {
+		log.Fatal("error in writing to response")
+	}
+}
