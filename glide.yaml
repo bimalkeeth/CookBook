@@ -1,0 +1,11 @@
+package: CookBook
+import:
+- package: github.com/gopherjs/jsbuiltin
+  version: ^1.4.0
+- package: github.com/gorilla/mux
+  version: ^1.7.1
+- package: github.com/lunny/log
+  version: ^0.1.0
+- package: honnef.co/go/js/dom
+- package: github.com/gorilla/handlers
+  version: ^1.4.0
