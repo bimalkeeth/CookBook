@@ -4,10 +4,12 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
 	"regexp"
+	"strings"
 )
 
 func main() {
@@ -71,8 +73,26 @@ func americanise(inFile io.Reader, outFile io.Writer) (err error) {
 	return nil
 }
 
-func makeReplaceFunction(s string) (func(string) string, error) {
-
+func makeReplaceFunction(file string) (func(string) string, error) {
+	rawBytes, err := ioutil.ReadAll(file)
+	if err != nil {
+		return nil, err
+	}
+	text := string(rawBytes)
+	usForBritish := make(map[string]string)
+	lines := strings.Split(text, "\n")
+	for _, line := range lines {
+		fields := strings.Fields(line)
+		if len(fields) == 2 {
+			usForBritish[fields[0]] = fields[1]
+		}
+	}
+	return func(word string) string {
+		if usWord, found := usForBritish[word]; found {
+			return usWord
+		}
+		return word
+	}, nil
 }
 
 func filesNamesFromCommandline() (inFileName string, outFileName string, err error) {
